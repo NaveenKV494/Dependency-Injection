@@ -1,15 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using static Dependency_Injection.Implementation;
+using static Dependency_Injection.Interfaces;
 
 namespace Dependency_Injection
 {
-    internal class Program
+
+
+    class Program
     {
         static void Main(string[] args)
         {
+            // Create a service collection
+            var services = new ServiceCollection();
+
+            // Register dependencies
+            services.AddSingleton<IGun, LaserGun>();
+            services.AddSingleton<ISword, EnergySword>();
+            services.AddSingleton<ITransformer, Transformer>();
+
+            // Build the service provider
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Resolve the Transformer and call the Attack method
+            var transformer = serviceProvider.GetRequiredService<ITransformer>();
+            transformer.Attack();
+
+            Console.ReadLine();
         }
     }
+
 }
